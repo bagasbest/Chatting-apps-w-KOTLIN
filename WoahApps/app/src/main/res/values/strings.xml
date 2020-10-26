@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Woah</string>
+    <string name="your_email">Your email</string>
+    <string name="let_go_to_chatting_with_woah">Let go to chatting with Woah</string>
+    <string name="your_password">Your password</string>
+    <string name="login">Login</string>
+    <string name="forgot_password">Forgot password</string>
+</resources>
