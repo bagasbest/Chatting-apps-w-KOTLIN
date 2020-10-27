@@ -5,4 +5,14 @@
     <string name="your_password">Your password</string>
     <string name="login">Login</string>
     <string name="forgot_password">Forgot password</string>
+    <string name="background">background</string>
+    <string name="make_your_own_nconversation">Make your Own \nConversation</string>
+    <string name="don_t_have_any_account_please">Don\'t have any account? please</string>
+    <string name="register">Register</string>
+    <string name="image">image</string>
+    <string name="free_regiser_all_time">Free Regiser all time</string>
+    <string name="let_go_register_yourself">Let go register yourself</string>
+    <string name="full_name">Full name</string>
+    <string name="back_to_login">Back to login</string>
+    <string name="woah_apps_v_0_0_1">Woah Apps v.0.0.1</string>
 </resources>
