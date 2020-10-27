@@ -70,7 +70,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/your_password"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="5dp"
                 app:passwordToggleEnabled="true"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
@@ -102,7 +102,10 @@
                 android:id="@+id/btnLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
                 android:backgroundTint="@color/colorPrimary"
                 android:text="@string/login"
                 android:textColor="@android:color/white" />
@@ -127,24 +130,24 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_marginEnd="20dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="17sp"
             android:layout_marginStart="16dp"
+            android:gravity="center"
             android:text="@string/don_t_have_any_account_please" />
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/register"
-            android:textSize="18sp"
             android:padding="10dp"
+            android:layout_gravity="center"
             android:onClick="register"
             android:textStyle="bold"
             android:textColor="@android:color/black"
