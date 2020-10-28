@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "5539111572",
+    "firebase_url": "https://woah-3ebf5.firebaseio.com",
+    "project_id": "woah-3ebf5",
+    "storage_bucket": "woah-3ebf5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:5539111572:android:4beea97c3af8f25a9d8a81",
+        "android_client_info": {
+          "package_name": "com.bagasbest.woah"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "5539111572-mqulpc3p0prrh10nqfv6gcac704qu7rr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzAWD9YCObEG2zGUqKcwzEI8ZLMzqtsVE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "5539111572-mqulpc3p0prrh10nqfv6gcac704qu7rr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -7,8 +7,15 @@ import android.util.Log
 import android.util.Patterns
 import android.util.Patterns.EMAIL_ADDRESS
 import android.view.View
+import android.widget.ProgressBar
+import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_register.*
+import java.util.*
 import java.util.regex.Pattern
+import kotlin.collections.HashMap
 
 
 class RegisterActivity : AppCompatActivity() {
@@ -17,11 +24,11 @@ class RegisterActivity : AppCompatActivity() {
     companion object {
         val PASSWORD_PATTERN: Pattern? =
             Pattern.compile("^" +
-                    "(?=. *[0-9])" +
-                    "(?=. *[a-z])" +
-                    "(?=. *[A-Z])" +
-                    "(?=. *[@#%^&+=])" +
-                    "(?=\\S+$)" +
+//                    "(?=. *[0-9])" +
+//                    "(?=. *[a-z])" +
+//                    "(?=. *[A-Z])" +
+//                    "(?=. *[@#%^&+=])" +
+//                    "(?=\\S+$)" +
                     ".{6,}" +
                     "$")
     }
@@ -33,64 +40,85 @@ class RegisterActivity : AppCompatActivity() {
 
         btnRegister.setOnClickListener {
 
-            validateEmail()
-            validateName()
-            validatePassword()
-
-           Log.d("RegisterActivity", "Email is : ${etEmail.text.toString()}\nNama Lengkap is : ${etName.text.toString()}\nPassword is : ${etPassword.text.toString()}\n")
+            formValidate()
+           //Log.d("RegisterActivity", "Email is : ${etEmail.text.toString()}\nNama Lengkap is : ${etName.text.toString()}\nPassword is : ${etPassword.text.toString()}\n")
 
         }
-
-
     }
 
-     private fun validateEmail(): Boolean {
-        val email = etEmail.text.toString().trim()
+    private fun saveUserToFirebase () {
 
-         return if(email.isEmpty()) {
-             etEmail.error = "Field can't be empty"
-             false;
-         }else if(!EMAIL_ADDRESS.matcher(email).matches()){
-             etEmail.error = "Please enter a valid email address"
-             false
-         }else {
+        val user = FirebaseAuth.getInstance().currentUser
+        val email = user?.email
+        val uid = user?.uid
+
+       // HashMap <Objects, String> hashMap = newHashMap<>()
+        val hashMap : HashMap<Any, String> = HashMap()
+        hashMap["username"] = etName.text.toString()
+        hashMap["email"] = email.toString()
+        hashMap["uid"] = uid.toString()
+        hashMap["dp"] = ""
+
+        val databaseReference = FirebaseDatabase.getInstance().getReference("/users/$uid")
+        databaseReference.setValue(hashMap)
+            .addOnSuccessListener {
+                showLoader(false);
+                Log.d("RegisterActivity", "Complete save to database")
+                Toast.makeText(this, "Registered", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener {
+                showLoader(false);
+                Toast.makeText(this, "Trouble", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+     private fun formValidate() {
+         val email = etEmail.text.toString().trim()
+         val name = etName.text.toString().trim()
+         val password = etPassword.text.toString().trim()
+
+
+              if(email.isEmpty()) etEmail.error = "Field can't be empty"
+              if (name.isEmpty()) etName.error = "Field can't be empty"
+              if (password.isEmpty()) etPassword.error = "Field can't be empty"
+              if (!EMAIL_ADDRESS.matcher(email).matches())
+                  etEmail.error = "Please enter a valid email address"
+              if(!PASSWORD_PATTERN?.matcher(password)?.matches()!!)
+                  etPassword.error = "Password too weak"
+
+         else {
              etEmail.error = null
-             true
+              //Firebase Authentication to create user with email and password
+              firebaseAuth()
+
          }
 
     }
 
-    private fun validateName (): Boolean {
-        val name = etName.text.toString().trim()
+   private fun firebaseAuth () {
+       showLoader(true);
+       FirebaseAuth.getInstance().createUserWithEmailAndPassword(etEmail.text.toString(), etPassword.text.toString())
+           .addOnCompleteListener {
+               if(!it.isSuccessful) return@addOnCompleteListener
 
-        return if(name.isEmpty()){
-            etName.error = "Field can't be empty"
-            false
-        }else if (name.length > 15) {
-            etName.error = "Username too long"
-            false
+               //else if successfull
+               Log.d("RegisterActivity", "Successfull ${it.result?.user?.uid}")
+
+               saveUserToFirebase()
+           }
+           .addOnFailureListener {
+               Log.d("RegisterActivity", "Failed : ${it.message}")
+               Toast.makeText(this, "Please enter email/password again", Toast.LENGTH_SHORT).show()
+           }
+   }
+
+    private fun showLoader (b : Boolean) {
+        if(b) {
+            progressBar.visibility = View.VISIBLE;
         } else {
-            etName.error = null
-            true
+            progressBar.visibility = View.GONE;
         }
     }
-
-    private fun validatePassword (): Boolean {
-        val password = etPassword.text.toString().trim()
-
-        return if(password.isEmpty()){
-            etPassword.error = "Field can't be empty"
-            false
-        } else if (!PASSWORD_PATTERN?.matcher(password)?.matches()!!) {
-            etPassword.error = "Password too weak"
-            false
-        } else {
-            etPassword.error = null
-            true
-        }
-
-    }
-
 
     fun backLogin(view: View) {
         val intent = Intent(this, MainActivity::class.java)
@@ -100,3 +128,5 @@ class RegisterActivity : AppCompatActivity() {
     }
 
 }
+
+//class User(val uid: String, val username: String, val email: String)

@@ -45,6 +45,14 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/let_go_register_yourself" />
 
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                android:layout_marginTop="16dp"/>
+
             <com.google.android.material.textfield.TextInputLayout
 
                 android:layout_width="match_parent"
