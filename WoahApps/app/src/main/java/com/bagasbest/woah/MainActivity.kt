@@ -16,6 +16,18 @@ import java.util.regex.Pattern
 
 class MainActivity : AppCompatActivity() {
 
+    override fun onStart() {
+        super.onStart()
+
+        val firebaseUser = FirebaseAuth.getInstance().currentUser
+
+        //check if user is null or not
+        if(firebaseUser != null) {
+           startActivity(Intent(this, LatestMessagesActivity::class.java))
+            finish()
+        }
+    }
+
     companion object {
         val PASSWORD_PATTERN: Pattern? =
             Pattern.compile("^" +

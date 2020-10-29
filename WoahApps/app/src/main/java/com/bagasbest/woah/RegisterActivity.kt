@@ -65,6 +65,11 @@ class RegisterActivity : AppCompatActivity() {
                 showLoader(false);
                 Log.d("RegisterActivity", "Complete save to database")
                 Toast.makeText(this, "Registered", Toast.LENGTH_SHORT).show()
+
+               val intent = Intent(this, LatestMessagesActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                startActivity(intent)
+
             }
             .addOnFailureListener {
                 showLoader(false);
