@@ -9,14 +9,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".NewMessageActivity" />
-        <activity android:name=".LatestMessagesActivity" />
+        <activity android:name=".messages.ChatLogActivity"></activity>
+        <activity android:name=".messages.NewMessageActivity" />
+        <activity android:name=".messages.LatestMessagesActivity" />
         <activity
-            android:name=".RegisterActivity"
-            android:parentActivityName=".MainActivity"
+            android:name=".activity.RegisterActivity"
+            android:parentActivityName=".activity.MainActivity"
             android:theme="@style/AppTheme2" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:theme="@style/AppTheme2">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

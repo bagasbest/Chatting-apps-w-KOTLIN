@@ -1,9 +1,12 @@
-package com.bagasbest.woah
+package com.bagasbest.woah.messages
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import androidx.appcompat.app.ActionBar
+import com.bagasbest.woah.R
+import com.bagasbest.woah.models.User
+import com.bagasbest.woah.models.UserItem
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -22,12 +25,12 @@ class NewMessageActivity : AppCompatActivity() {
         actionbar.setDisplayHomeAsUpEnabled(true)
         actionbar.setDisplayShowHomeEnabled(true)
 
-//        val adapter = GroupAdapter<ViewHolder>()
-//        adapter.add(UserItem())
-//        recyclerView.adapter = adapter
-
         fetchUserFromFirebase()
 
+    }
+
+    companion object {
+        val USER_KEY = "USER_KEY"
     }
 
     private fun fetchUserFromFirebase() {
@@ -43,6 +46,16 @@ class NewMessageActivity : AppCompatActivity() {
                     if(user != null) {
                         adapter.add(UserItem(user))
                     }
+
+                }
+
+                adapter.setOnItemClickListener { item, view ->
+
+                    val userItem = item as UserItem
+
+                    val intent  = Intent(view.context, ChatLogActivity::class.java)
+                    intent.putExtra(USER_KEY, userItem.user)
+                    startActivity(intent)
 
                 }
 

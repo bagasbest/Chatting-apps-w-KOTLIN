@@ -1,4 +1,4 @@
-package com.bagasbest.woah
+package com.bagasbest.woah.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -7,11 +7,12 @@ import android.util.Log
 import android.util.Patterns
 import android.view.View
 import android.widget.Toast
+import com.bagasbest.woah.R
+import com.bagasbest.woah.messages.LatestMessagesActivity
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.etEmail
 import kotlinx.android.synthetic.main.activity_main.etPassword
-import kotlinx.android.synthetic.main.activity_register.*
 import java.util.regex.Pattern
 
 class MainActivity : AppCompatActivity() {

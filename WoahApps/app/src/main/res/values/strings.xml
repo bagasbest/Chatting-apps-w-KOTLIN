@@ -18,4 +18,6 @@
     <string name="sign_out">Sign out</string>
     <string name="new_message">New message</string>
     <string name="username">username</string>
+    <string name="start_typing">Start typing</string>
+    <string name="message_of_receiver">message of receiver</string>
 </resources>

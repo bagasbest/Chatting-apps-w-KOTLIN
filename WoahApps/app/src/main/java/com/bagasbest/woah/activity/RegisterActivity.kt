@@ -1,19 +1,17 @@
-package com.bagasbest.woah
+package com.bagasbest.woah.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.util.Patterns
 import android.util.Patterns.EMAIL_ADDRESS
 import android.view.View
-import android.widget.ProgressBar
 import android.widget.Toast
+import com.bagasbest.woah.R
+import com.bagasbest.woah.messages.LatestMessagesActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_register.*
-import java.util.*
 import java.util.regex.Pattern
 import kotlin.collections.HashMap
 
