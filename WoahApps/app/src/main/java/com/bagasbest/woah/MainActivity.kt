@@ -60,8 +60,14 @@ class MainActivity : AppCompatActivity() {
                 Log.d("MainActivity", "Email is : ${etEmail.text.toString()}")
                 Log.d("MainActivity", "Password is : ${etPassword.text.toString()}")
                 Log.d("MainActivity", "UID IS : ${it.result?.user?.uid}")
+
+                showLoader(false)
+                startActivity(Intent(this, LatestMessagesActivity::class.java))
+                finish()
+
             }
             .addOnFailureListener {
+                showLoader(false)
                 Log.d("MainActivity", "Failed to create user : ${it.message}")
                 Toast.makeText(this, "Please enter email/password again", Toast.LENGTH_SHORT).show()
             }
@@ -83,6 +89,7 @@ class MainActivity : AppCompatActivity() {
         else {
             etEmail.error = null
             //Firebase Authentication to create user with email and password
+            showLoader(true)
             loginAuth()
         }
     }
@@ -96,5 +103,13 @@ class MainActivity : AppCompatActivity() {
     }
     fun phoneLogin(view: View) {
 
+    }
+
+    private fun showLoader (b : Boolean) {
+        if(b) {
+            progressBarLogin.visibility = View.VISIBLE;
+        } else {
+            progressBarLogin.visibility = View.GONE;
+        }
     }
 }
