@@ -7,6 +7,7 @@ import android.util.Log
 import com.bagasbest.woah.R
 import com.bagasbest.woah.models.User
 import com.bagasbest.woah.models.UserItem
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -43,8 +44,14 @@ class NewMessageActivity : AppCompatActivity() {
                 snapshot.children.forEach {
                     Log.d("NewMessage: ", it.toString())
                     val user = it.getValue(User::class.java)
+                    val myId = FirebaseAuth.getInstance().uid
                     if(user != null) {
-                        adapter.add(UserItem(user))
+
+                        //add every user except user id
+                        if(user.uid != myId){
+                            adapter.add(UserItem(user))
+                        }
+
                     }
 
                 }
