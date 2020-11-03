@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/bg_sender"
         android:layout_marginTop="10dp"
-        android:layout_toStartOf="@+id/userdp"
+        android:layout_toStartOf="@+id/userTodp"
         android:padding="10dp"
         android:orientation="vertical">
 
@@ -43,7 +43,7 @@
     </LinearLayout>
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/userdp"
+        android:id="@+id/userTodp"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignParentEnd="true"

@@ -24,6 +24,7 @@ class ChatLogActivity : AppCompatActivity() {
     }
 
     val adapter = GroupAdapter<ViewHolder>()
+    var toUser: User? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,10 +33,10 @@ class ChatLogActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
 
         //pake parcelable
-        val user = intent.getParcelableExtra<User>(NewMessageActivity.USER_KEY)
+        toUser= intent.getParcelableExtra<User>(NewMessageActivity.USER_KEY)
 
         val actionBar = supportActionBar
-        actionBar?.title = user?.username
+        actionBar?.title = toUser?.username
         actionBar?.setDisplayHomeAsUpEnabled(true)
         actionBar?.setDisplayShowHomeEnabled(true)
         
@@ -58,9 +59,10 @@ class ChatLogActivity : AppCompatActivity() {
                     val toId = user?.uid
 
                     if(chatMessage.fromId == FirebaseAuth.getInstance().uid && chatMessage.toId == toId) {
-                        adapter.add(ChatToItem(chatMessage.text))
+                        adapter.add(ChatToItem(chatMessage.text, toUser!!))
                     }else if (chatMessage.fromId == toId && chatMessage.toId == FirebaseAuth.getInstance().uid){
-                        adapter.add(ChatFromItem(chatMessage.text))
+                        val currentUser = LatestMessagesActivity.currentUser
+                        adapter.add(ChatFromItem(chatMessage.text, currentUser!!))
                     }
                 }
 

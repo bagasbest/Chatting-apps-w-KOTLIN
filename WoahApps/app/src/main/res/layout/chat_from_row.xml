@@ -39,7 +39,7 @@
     </LinearLayout>
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/userdp"
+        android:id="@+id/userFromdp"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:background="@drawable/avatar_blank" />
