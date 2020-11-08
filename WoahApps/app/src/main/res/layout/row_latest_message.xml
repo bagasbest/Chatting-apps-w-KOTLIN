@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingTop="16dp"
+    android:paddingStart="16dp"
+    android:paddingEnd="10dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/latest_userImage"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        app:civ_border_color="@android:color/darker_gray"
+        app:civ_border_width="2dp"
+        android:background="@drawable/avatar_blank"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/latest_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/username"
+        android:layout_marginStart="10dp"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@id/latest_userImage"
+        android:textStyle="bold"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/latest_messageTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        app:layout_constraintStart_toEndOf="@+id/latest_userImage"
+        app:layout_constraintTop_toBottomOf="@+id/latest_username"
+        android:layout_marginEnd="10dp"
+        android:maxLines="2"
+        android:text="@string/your_own_message_has_shown_here_dude"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

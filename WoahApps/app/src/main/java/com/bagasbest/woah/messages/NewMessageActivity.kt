@@ -42,7 +42,7 @@ class NewMessageActivity : AppCompatActivity() {
                 val adapter = GroupAdapter<ViewHolder>()
 
                 snapshot.children.forEach {
-                    Log.d("NewMessage: ", it.toString())
+
                     val user = it.getValue(User::class.java)
                     val myId = FirebaseAuth.getInstance().uid
                     if(user != null) {

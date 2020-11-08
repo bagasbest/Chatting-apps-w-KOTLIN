@@ -32,8 +32,8 @@ class ChatLogActivity : AppCompatActivity() {
 
         recyclerView.adapter = adapter
 
-        //pake parcelable
-        toUser= intent.getParcelableExtra<User>(NewMessageActivity.USER_KEY)
+        //pake parcelable untuk mengambil data penerima
+        toUser= intent.getParcelableExtra(NewMessageActivity.USER_KEY)
 
         val actionBar = supportActionBar
         actionBar?.title = toUser?.username
@@ -55,8 +55,7 @@ class ChatLogActivity : AppCompatActivity() {
                 if (chatMessage != null) {
                     Log.d(TAG, chatMessage.text)
 
-                    val user = intent.getParcelableExtra<User>(NewMessageActivity.USER_KEY)
-                    val toId = user?.uid
+                    val toId = toUser?.uid
 
                     if(chatMessage.fromId == FirebaseAuth.getInstance().uid && chatMessage.toId == toId) {
                         adapter.add(ChatToItem(chatMessage.text, toUser!!))
@@ -84,6 +83,8 @@ class ChatLogActivity : AppCompatActivity() {
 
             }
         })
+
+        recyclerView.scrollToPosition(adapter.itemCount - 1)
     }
 
 
@@ -106,6 +107,14 @@ class ChatLogActivity : AppCompatActivity() {
 
             }
         messageEt.text.clear()
+
+        //to get last message (user)
+        val latestMessage = FirebaseDatabase.getInstance().getReference("/latest_message/$fromId/$toId")
+        latestMessage.setValue(chatMessage)
+
+        //to get last message (other)
+        val latestMessagetoRef = FirebaseDatabase.getInstance().getReference("/latest_message/$toId/$fromId")
+        latestMessagetoRef.setValue(chatMessage)
     }
 
 

@@ -20,4 +20,5 @@
     <string name="username">username</string>
     <string name="start_typing">Start typing</string>
     <string name="message_of_receiver">message of receiver</string>
+    <string name="your_own_message_has_shown_here_dude">your own message has shown here dude!</string>
 </resources>
