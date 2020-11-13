@@ -36,9 +36,9 @@ class ChatLogActivity : AppCompatActivity() {
         toUser= intent.getParcelableExtra(NewMessageActivity.USER_KEY)
 
         val actionBar = supportActionBar
-        actionBar?.title = toUser?.username
-        actionBar?.setDisplayHomeAsUpEnabled(true)
-        actionBar?.setDisplayShowHomeEnabled(true)
+        actionBar!!.title = toUser?.username
+        actionBar.setDisplayHomeAsUpEnabled(true)
+        actionBar.setDisplayShowHomeEnabled(true)
         
         listenForMessage()
         sendBtn.setOnClickListener {
@@ -118,8 +118,9 @@ class ChatLogActivity : AppCompatActivity() {
     }
 
 
-    override fun onNavigateUp(): Boolean {
+    override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
     }
+
 }

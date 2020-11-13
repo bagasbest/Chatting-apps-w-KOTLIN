@@ -21,4 +21,9 @@
     <string name="start_typing">Start typing</string>
     <string name="message_of_receiver">message of receiver</string>
     <string name="your_own_message_has_shown_here_dude">your own message has shown here dude!</string>
+    <string name="change_name">Change name</string>
+    <string name="change_number">Change number</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="change_email">Change email</string>
 </resources>

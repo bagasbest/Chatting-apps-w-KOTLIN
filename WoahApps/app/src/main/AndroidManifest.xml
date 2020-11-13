@@ -11,7 +11,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".messages.ChatLogActivity"></activity>
         <activity android:name=".messages.NewMessageActivity" />
-        <activity android:name=".messages.LatestMessagesActivity" />
+        <activity android:name=".messages.LatestMessagesActivity" android:theme="@style/AppTheme3" />
         <activity
             android:name=".activity.RegisterActivity"
             android:parentActivityName=".activity.MainActivity"
