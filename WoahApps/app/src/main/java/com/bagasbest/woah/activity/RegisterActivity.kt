@@ -55,6 +55,7 @@ class RegisterActivity : AppCompatActivity() {
         hashMap["username"] = etName.text.toString()
         hashMap["email"] = email.toString()
         hashMap["uid"] = uid.toString()
+        hashMap["phone_nbr"] = ""
         hashMap["dp"] = ""
 
         val databaseReference = FirebaseDatabase.getInstance().getReference("/users/$uid")

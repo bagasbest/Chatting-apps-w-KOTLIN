@@ -1,35 +1,34 @@
 package com.bagasbest.woah.messages
 
-import android.content.DialogInterface
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
-import android.view.Menu
 import android.view.MenuItem
-import android.widget.Switch
+import android.view.View
+import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.Toolbar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
-
 import androidx.recyclerview.widget.DividerItemDecoration
-import com.bagasbest.woah.activity.MainActivity
 import com.bagasbest.woah.R
+import com.bagasbest.woah.activity.MainActivity
 import com.bagasbest.woah.messages.NewMessageActivity.Companion.USER_KEY
 import com.bagasbest.woah.models.ChatMessage
 import com.bagasbest.woah.models.LatestMessageRow
 import com.bagasbest.woah.models.User
+import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import com.google.firebase.ktx.Firebase
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.activity_latest_messages.*
-import kotlinx.android.synthetic.main.header.*
+import kotlinx.android.synthetic.main.activity_latest_messages.progressBarLogin
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.header.view.*
 
 class LatestMessagesActivity : AppCompatActivity(),
@@ -44,8 +43,12 @@ class LatestMessagesActivity : AppCompatActivity(),
         setContentView(R.layout.activity_latest_messages)
 
         recyclerView_latestMessage.adapter = adapter
-        recyclerView_latestMessage.addItemDecoration(DividerItemDecoration(this,
-        DividerItemDecoration.VERTICAL))
+        recyclerView_latestMessage.addItemDecoration(
+            DividerItemDecoration(
+                this,
+                DividerItemDecoration.VERTICAL
+            )
+        )
 
         title = "Latest message"
 
@@ -55,16 +58,24 @@ class LatestMessagesActivity : AppCompatActivity(),
         supportActionBar?.setDisplayShowHomeEnabled(true)
 //        val drw = DrawerLayout(findViewById(R.id.drawer_layout))
 
-        val toggle = ActionBarDrawerToggle(this, drawer_layout, toolbar,  R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+        val toggle = ActionBarDrawerToggle(
+            this,
+            drawer_layout,
+            toolbar,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
+        )
 
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
         nav_view.bringToFront()
 
         val headerView = nav_view.getHeaderView(0)
+        loadDataUser()
         headerView.changePictureIv.setOnClickListener {
             changeProfilePic();
         }
+
 
         nav_view.setNavigationItemSelectedListener(this)
 
@@ -84,6 +95,47 @@ class LatestMessagesActivity : AppCompatActivity(),
         fetchCurrentUser()
         verifyUserLogin()
 
+
+
+    }
+
+    private fun loadDataUser() {
+        showLoader(true)
+
+        val ref = FirebaseDatabase.getInstance().getReference("users")
+        val query = ref.orderByChild("email").equalTo(FirebaseAuth.getInstance().currentUser?.email)
+            query.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for (ds in snapshot.children) {
+                        //get data
+                        val name = "" + ds.child("username").value
+                        val image = "" + ds.child("dp").value
+                        val email = "" + ds.child("email").value
+                        val number = "" + ds.child("phone_nbr").value
+
+                        //set data
+                        val headerView = nav_view.getHeaderView(0)
+                        headerView.tvUsernameNavDrawer.text = name
+                        headerView.tvEmailNavDrawer.text = email
+                        if(number.equals(null)){
+                            headerView.tvPhoneNavDrawer.text = "kosong"
+                        }else{
+                            headerView.tvPhoneNavDrawer.text = number
+                        }
+
+                        Glide.with(this@LatestMessagesActivity).load(image)
+                            .placeholder(R.drawable.avatar_blank).error(R.drawable.avatar_blank)
+                            .into(headerView.ivImageNavDrawer)
+
+
+                        showLoader(false)
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+
+                }
+            })
     }
 
     private fun changeProfilePic () {
@@ -142,15 +194,15 @@ class LatestMessagesActivity : AppCompatActivity(),
         })
     }
 
-    val adapter = GroupAdapter<ViewHolder>()
+    private val adapter = GroupAdapter<ViewHolder>()
 
     private fun fetchCurrentUser () {
         val uid = FirebaseAuth.getInstance().uid
         val ref = FirebaseDatabase.getInstance().getReference("users/$uid")
-        ref.addListenerForSingleValueEvent(object: ValueEventListener{
+        ref.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 currentUser = snapshot.getValue(User::class.java)
-                Log.d("LatestMessageActivity", "Current user :  ${ currentUser?.profileImageUrl} ")
+                Log.d("LatestMessageActivity", "Current user :  ${currentUser?.profileImageUrl} ")
 
             }
 
@@ -186,9 +238,15 @@ class LatestMessagesActivity : AppCompatActivity(),
                 startActivity(Intent(this, NewMessageActivity::class.java))
             }
 
-            R.id.menu_change_name -> Toast.makeText(this, "Change name", Toast.LENGTH_SHORT).show()
-            R.id.menu_change_email -> Toast.makeText(this, "Change email", Toast.LENGTH_SHORT).show()
-            R.id.change_number -> Toast.makeText(this, "Change number", Toast.LENGTH_SHORT).show()
+            R.id.menu_change_name -> {
+                showNamePhoneUpdateDialog("username");
+            }
+
+            R.id.menu_change_email -> Toast.makeText(this, "Change email", Toast.LENGTH_SHORT)
+                .show()
+            R.id.change_number -> {
+                showNamePhoneUpdateDialog("phone_nbr");
+            }
 
             R.id.menu_sign_out -> {
                 val builder = AlertDialog.Builder(this)
@@ -205,7 +263,7 @@ class LatestMessagesActivity : AppCompatActivity(),
                     startActivity(intent)
                     finish();
                 }
-                builder.setNegativeButton("NO") { _,_ ->
+                builder.setNegativeButton("NO") { _, _ ->
 
                 }
 
@@ -218,7 +276,55 @@ class LatestMessagesActivity : AppCompatActivity(),
         return true
     }
 
+    private fun showNamePhoneUpdateDialog(key: String) {
+
+        val user = FirebaseAuth.getInstance().currentUser
+        val uid = user?.uid
+
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Update $key")
+
+            val layout = LinearLayout(this)
+            layout.orientation = LinearLayout.VERTICAL
+            layout.setPadding(10, 10, 10, 10)
+
+            val editText = EditText(this)
+            editText.hint = "Input $key"
+            layout.addView(editText)
+        
+            builder.setView(layout)
+
+            builder.setPositiveButton("Update") { _, _ ->
+                val value = editText.text.toString().trim()
+                if(!TextUtils.isEmpty(key)) {
+                    val hashMap : HashMap<String, Any> = HashMap()
+                    hashMap[key] = value
+
+                    val databaseReference = FirebaseDatabase.getInstance().getReference("/users/$uid")
+                    databaseReference.updateChildren(hashMap)
+                        .addOnSuccessListener {
+                            Toast.makeText(this, "Successfully", Toast.LENGTH_SHORT).show()
+                        }
+                        .addOnFailureListener{
+                            Toast.makeText(this, "Trouble", Toast.LENGTH_SHORT).show()
+                        }
+                }
+
+            }
+            builder.setNegativeButton("Cancel") {_,_ ->
+
+            }
+        builder.create().show()
+
+    }
 
 
+    private fun showLoader(b: Boolean) {
+        if(b) {
+            progressBarLogin.visibility = View.VISIBLE;
+        } else {
+            progressBarLogin.visibility = View.GONE;
+        }
+    }
 
 }
